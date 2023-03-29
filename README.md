@@ -1,9 +1,19 @@
 
+Change settings for sleep under Power and Privacy in settings
+
+Install  random apps
+
+```zsh
+sudo dnf install pinta
+```
 Generate ssh keys add to git account
 
 ```zsh
 sudo dnf install zsh util-linux-user
 chsh -s $(which zsh)
+# run zsh to configure (automate this)
+# Install Oh My zsh
+sh -c "$(wget https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh -O -)"
 ```
 
 Configure ssh
@@ -49,7 +59,7 @@ Install ChatGPT
 ```zsh
 mkdir /opt/ChatGPT-Desktop
 wget https://github.com/lencx/ChatGPT/releases/download/v0.12.0/ChatGPT_0.12.0_linux_x86_64.AppImage.tar.gz -P /opt/ChatGPT-Desktop
-wget https://chat.openai.com/favicon.ico -P /opt/ChatGPT-Desktop
+cp files/chatgpticon.png /opt/ChatGPT-Desktop
 cp files/ChatGPT.desktop /usr/share/applications
 ```
 
