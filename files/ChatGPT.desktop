@@ -1,0 +1,5 @@
+[ChatGPT]
+Type=Application
+Name=ChatGPT
+Exec=/opt/ChatGPT-Desktop/chat-gpt_0.12.0_amd64.AppImage
+Icon=/opt/ChatGPT-Desktop/favicon.ico
