@@ -1,5 +1,8 @@
-[ChatGPT]
+[Desktop Entry]
+Version=1.0
 Type=Application
 Name=ChatGPT
 Exec=/opt/ChatGPT-Desktop/chat-gpt_0.12.0_amd64.AppImage
-Icon=/opt/ChatGPT-Desktop/favicon.ico
+Icon=/opt/ChatGPT-Desktop/chatgpticon.png
+Terminal=false
+Categories=Utility;Application;
