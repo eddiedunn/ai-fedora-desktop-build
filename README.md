@@ -1,6 +1,8 @@
 Fix freeze issue for Ryzen
 
-grubby --args="processor.max_cstate=5" --update-kernel=ALL
+output of echo rcu_nocbs=0-$(($(nproc)-1)) 
+to get numbers these are for 6 core ryzen CPU
+grubby --args="processor.max_cstate=5 rcu_nocbs=0-11" --update-kernel=ALL
 
 Change settings for sleep under Power and Privacy in settings
 
@@ -43,6 +45,9 @@ mount /dev/md1 /mnt/rootfs/boot/efi
 # Update mdadm config
 mdadm --detail --scan | sudo tee -a /mnt/rootfs/etc/mdadm.conf
 
+add MAILADDR your_email@example.com
+to the end of /mnt/rootfs/etc/mdadm.conf
+
 # get into chroot of new RAID set
 sudo mount --bind /proc /mnt/rootfs/proc
 sudo mount --bind /sys /mnt/rootfs/sys
@@ -55,6 +60,16 @@ grub-mkconfig -o /boot/grub/grub.cfg
 grub-install --efi-directory=/boot/efi --bootloader-id=GRUB
 
 # reboot and you should be good to go
+# don't forget to enable the monitor service
+
+systemctl enable --now mdadm-monitor.service
+
+# NOTE: must configure SMTP
+https://www.recitalsoftware.com/blogs/175-howto-use-a-gmail-account-to-relay-email-from-a-shell-prompt-on-redhat-centos-fedora
+
+# to test
+mdadm --monitor --scan --test -1
+
 ```
 
 https://github.com/devangshekhawat/Fedora-37-Post-Install-Guide
