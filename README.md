@@ -6,62 +6,11 @@ grubby --args="processor.max_cstate=5 rcu_nocbs=0-11" --update-kernel=ALL
 
 Change settings for sleep under Power and Privacy in settings
 
-Setup Software RAID using mdadm (if needed)
-MAKE SURE YOU DO THIS NEXT COMMAND ON CORRECT DEVICE!!!!
-This assumes `/dev/nvme0n1` is the original boot device
-must boot to live media
-```zfs
-sgdisk --zap-all /dev/nvme1n1
-wipefs --all --force /dev/nvme1n1
-# Sync partitions to new disk
-sfdisk -d /dev/nvme0n1 > partition_layout.sfdisk
-sfdisk /dev/nvme1n1 < partition_layout.sfdisk
+Setup Software RAID using mdadm on install
 
-# On default fedora 37
-# p1 = efi
-# p2 = boot
-# p3 = root (/) and homt (/home)
-# UUID={UUID} /                       btrfs   subvol=root,compress=zstd:1 0 0
-# UUID={UUID} /boot                   ext4    defaults        1 2
-# UUID={UUID}          /boot/efi               vfat    umask=0077,shortname=winnt 0 2
-# UUID={UUID} /home                   btrfs   subvol=home,compress=zstd:1 0 0
+If using mdadm configure alerts so you will see them
 
-mdadm --create /dev/md1 --level=1 --raid-devices=2 /dev/nvme0n1p1 /dev/nvme1n1p1
-mdadm --create /dev/md2 --level=1 --raid-devices=2 /dev/nvme0n1p2 /dev/nvme1n1p2
-mdadm --create /dev/md3 --level=1 --raid-devices=2 /dev/nvme0n1p3 /dev/nvme1n1p3
-
-mkdir /mnt/rootfs
-mount /dev/md3 /mnt/rootfs
-
-mkdir /mnt/rootfs/boot
-mount /dev/md2 /mnt/rootfs/boot
-
-mkdir /mnt/rootfs/boot/efi
-mount /dev/md1 /mnt/rootfs/boot/efi
-
-# Update /etc/fstab, replace UUIDs with new md devices ( md{1,3} )
-/mnt/rootfs/etc/fstab
-
-# Update mdadm config
-mdadm --detail --scan | sudo tee -a /mnt/rootfs/etc/mdadm.conf
-
-add MAILADDR your_email@example.com
-to the end of /mnt/rootfs/etc/mdadm.conf
-
-# get into chroot of new RAID set
-sudo mount --bind /proc /mnt/rootfs/proc
-sudo mount --bind /sys /mnt/rootfs/sys
-sudo mount --bind /dev /mnt/rootfs/dev
-sudo chroot /mnt/rootfs
-
-
-grub-mkconfig -o /boot/grub/grub.cfg
-# Assuming EFI
-grub-install --efi-directory=/boot/efi --bootloader-id=GRUB
-
-# reboot and you should be good to go
 # don't forget to enable the monitor service
-
 systemctl enable --now mdadm-monitor.service
 
 # NOTE: must configure SMTP
@@ -70,7 +19,7 @@ https://www.recitalsoftware.com/blogs/175-howto-use-a-gmail-account-to-relay-ema
 # to test
 mdadm --monitor --scan --test -1
 
-```
+
 
 https://github.com/devangshekhawat/Fedora-37-Post-Install-Guide
 
