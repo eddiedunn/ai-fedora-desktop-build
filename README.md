@@ -10,6 +10,7 @@ Setup Software RAID using mdadm on install
 
 If using mdadm configure alerts so you will see them
 
+```zfs
 # don't forget to enable the monitor service
 systemctl enable --now mdadm-monitor.service
 
@@ -18,8 +19,16 @@ https://www.recitalsoftware.com/blogs/175-howto-use-a-gmail-account-to-relay-ema
 
 # to test
 mdadm --monitor --scan --test -1
+```
 
-
+Copy dot files inspired by
+https://github.com/geerlingguy/dotfiles
+ 
+```zfs
+cp files/.gitconfig ~
+cp files/.gitignore ~
+cp files/.vimrc ~
+```
 
 https://github.com/devangshekhawat/Fedora-37-Post-Install-Guide
 
