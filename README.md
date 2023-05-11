@@ -1,11 +1,5 @@
-https://github.com/drduh/YubiKey-Guide
-
-
 Fix freeze issue for Ryzen
 
-output of echo rcu_nocbs=0-$(($(nproc)-1)) 
-to get numbers these are for 6 core ryzen CPU
-grubby --args="processor.max_cstate=5 rcu_nocbs=0-11" --update-kernel=ALL
 
 grubby --args="processor.max_cstate=1 rcu_nocbs=0-11" --update-kernel=ALL
 
@@ -15,7 +9,7 @@ Setup Software RAID using mdadm on install
 
 If using mdadm configure alerts so you will see them
 
-```zfs
+```zsh
 # don't forget to enable the monitor service
 systemctl enable --now mdadm-monitor.service
 
@@ -71,7 +65,7 @@ Download the client ID and secret in JSON format.
 Copy dot files inspired by
 https://github.com/geerlingguy/dotfiles
  
-```zfs
+```zsh
 cp files/.gitconfig ~
 cp files/.gitignore ~
 cp files/.vimrc ~
@@ -162,6 +156,15 @@ Install Discord
 sudo dnf install discord
 ```
 
+Install Zoom
+
+```zsh
+# Dependencies
+sudo dnf install libc.so.6 libX11.so.6 libXfixes.so.3 libglib-2.0.so.0 libGL.so.1 libsqlite3.so.0 libXrender.so.1 libXcomposite.so.1 libQt3Support.so.4 libxslt.so.1 libpulse.so.0 libgthread-2.0.so.0 libxcb-shape.so.0 libxcb-shm.so.0 libxcb-randr.so.0 libxcb-image.so.0 libxcb-xtest.so.0 libxcb-keysyms.so.1 mesa-dri-drivers ibus
+
+wget https://zoom.us/client/latest/zoom_x86_64.rpm
+sudo dnf install zoom_x86_64.rpm
+```
 Install vscode
 
 ```zsh
