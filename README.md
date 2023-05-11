@@ -1,8 +1,13 @@
+https://github.com/drduh/YubiKey-Guide
+
+
 Fix freeze issue for Ryzen
 
 output of echo rcu_nocbs=0-$(($(nproc)-1)) 
 to get numbers these are for 6 core ryzen CPU
 grubby --args="processor.max_cstate=5 rcu_nocbs=0-11" --update-kernel=ALL
+
+grubby --args="processor.max_cstate=1 rcu_nocbs=0-11" --update-kernel=ALL
 
 Change settings for sleep under Power and Privacy in settings
 
@@ -14,11 +19,53 @@ If using mdadm configure alerts so you will see them
 # don't forget to enable the monitor service
 systemctl enable --now mdadm-monitor.service
 
-# NOTE: must configure SMTP
-https://www.recitalsoftware.com/blogs/175-howto-use-a-gmail-account-to-relay-email-from-a-shell-prompt-on-redhat-centos-fedora
+# NOTE: must configure SMTP via msmtp
+# add MAILADDR jdoe@somemail.com to /etc/mdadm.conf
+
 
 # to test
 mdadm --monitor --scan --test -1
+```
+Config msmtp
+
+```zfs
+sudo dnf install msmtp
+touch /etc/msmtprc
+chmod 600 /etc/msmtprc
+```
+
+msmtp config file
+```
+defaults
+auth            oauthbearer
+tls             on
+tls_trust_file  /etc/ssl/certs/ca-bundle.crt
+logfile         /var/log/msmtp.log
+
+account         gmail
+host            smtp.gmail.com
+port            587
+from            <YOUR_EMAIL>@gmail.com
+user            <YOUR_EMAIL>@gmail.com
+passwordeval    "/root/go/bin/oauth2l fetch --json /path/to/client_secret.json --credentials /path/to/refresh_token --scope https://www.googleapis.com/auth/gmail.send"
+
+account default : gmail
+
+```
+
+Set up OAuth2:
+
+Visit the Google Developers Console.
+Create a new project.
+Enable the "Gmail API" for your project.
+Create new consent screen and OAuth 2.0 credentials for your project.
+Download the client ID and secret in JSON format.
+
+```zfs
+
+
+# 
+
 ```
 
 Copy dot files inspired by
@@ -40,12 +87,17 @@ Click the link in the box at top
 Install  random apps
 
 ```zsh
-sudo dnf install -y pinta gnome-tweaks lm_sensors htop iotop
+sudo dnf install -y pinta gnome-tweaks lm_sensors htop iotop golang
+sudo dnf install gstreamer1-libav gstreamer1-plugins-ugly gstreamer1-plugins-bad-free gstreamer1-plugins-bad-freeworld gstreamer1-plugins-base-tools gstreamer1-plugins-good gstreamer1-plugins-good-extras ffmpeg
+
 ```
 
 Change scaling factor on font to adjust text size
 
 Generate ssh keys add to git account
+
+
+# Install zsh and 
 
 ```zsh
 sudo dnf install -y zsh util-linux-user
@@ -54,19 +106,14 @@ chsh -s $(which zsh)
 # Install Oh My zsh
 sh -c "$(wget https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh -O -)"
 ```
+add this to the bottom of ~/.zshrc
 
-Configure ssh
-
-```zsh
-  git config --global user.email "eddie@eddiedunn.com"
-  git config --global user.name "eddiedunn"
-```
 
 Change default editor to vi 
 
 ```zsh
 dnf remove nano-default-editor
-sudo dnf install -y vim-default-editor
+sudo dnf install -y vim-default-editor 
 # add nano back
 sudo dnf install nano
 ```
@@ -136,6 +183,9 @@ Install pyenv
 https://github.com/pyenv/pyenv
 
 ```zsh
+sudo dnf groupinstall -y "Development Tools"
+sudo dnf install zlib-devel bzip2 bzip2-devel readline-devel sqlite sqlite-devel openssl-devel xz xz-devel libffi-devel findutils -y
+
 curl https://pyenv.run | bash
 echo 'export PYENV_ROOT="$HOME/.pyenv"' >> ~/.zshrc
 echo 'command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"' >> ~/.zshrc
@@ -158,8 +208,8 @@ sudo sh cuda_11.7.1_515.65.01_linux.run --toolkit --silent --override --toolkitp
 Install gcc 11.2
 
 ```zsh
-sudo dnf groupinstall -y "Development Tools"
-sudo dnf install -y  mpfr-devel libmpc-devel gmp-devel zlib-devel
+
+sudo dnf install -y  mpfr-devel libmpc-devel gmp-devel zlib-devel 
 wget https://ftp.gnu.org/gnu/gcc/gcc-11.2.0/gcc-11.2.0.tar.gz
 tar xf gcc-11.2.0.tar.gz
 mkdir gcc-11.2.0-build
@@ -180,4 +230,13 @@ sudo cp [repodir]/files/gcc-cuda-remove-11.2.0-11.7.sh /usr/local/bin
 sudo cp [repodir]/files/gcc-cuda-add-11.2.0-11.7.sh /usr/local/bin
 chmod 755 /usr/local/bin/gcc-cuda-add-11.2.0-11.7.sh
 chmod 755 /usr/local/bin/gcc-cuda-add-11.2.0-11.7.sh
+```
+
+
+```zfs
+curl -sL "https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh" > "Miniconda3.sh"
+bash Miniconda3.sh
+conda config --set auto_activate_base false
+
+sudo dnf install -y cairo-devel gobject-introspection-devel cairo-gobject-devel
 ```
