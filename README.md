@@ -9,8 +9,9 @@ https://github.com/geerlingguy/dotfiles
  
 ```zsh
 cp files/.gitconfig ~
-cp files/.gitignore ~
+cp files/.gitignore ~/.gitignore_global
 cp files/.vimrc ~
+git config --global core.excludesfile ~/.gitignore_global
 ```
 
 https://github.com/devangshekhawat/Fedora-37-Post-Install-Guide
