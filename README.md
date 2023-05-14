@@ -1,66 +1,8 @@
-Fix freeze issue for Ryzen
+# Here is my step to get a new fedora build going
+
+Setup Software RAID 1 for system drive and any data drives using mdadm on install
 
 
-grubby --args="processor.max_cstate=1 rcu_nocbs=0-11" --update-kernel=ALL
-
-Change settings for sleep under Power and Privacy in settings
-
-Setup Software RAID using mdadm on install
-
-If using mdadm configure alerts so you will see them
-
-```zsh
-# don't forget to enable the monitor service
-systemctl enable --now mdadm-monitor.service
-
-# NOTE: must configure SMTP via msmtp
-# add MAILADDR jdoe@somemail.com to /etc/mdadm.conf
-
-
-# to test
-mdadm --monitor --scan --test -1
-```
-Config msmtp
-
-```zfs
-sudo dnf install msmtp
-touch /etc/msmtprc
-chmod 600 /etc/msmtprc
-```
-
-msmtp config file
-```
-defaults
-auth            oauthbearer
-tls             on
-tls_trust_file  /etc/ssl/certs/ca-bundle.crt
-logfile         /var/log/msmtp.log
-
-account         gmail
-host            smtp.gmail.com
-port            587
-from            <YOUR_EMAIL>@gmail.com
-user            <YOUR_EMAIL>@gmail.com
-passwordeval    "/root/go/bin/oauth2l fetch --json /path/to/client_secret.json --credentials /path/to/refresh_token --scope https://www.googleapis.com/auth/gmail.send"
-
-account default : gmail
-
-```
-
-Set up OAuth2:
-
-Visit the Google Developers Console.
-Create a new project.
-Enable the "Gmail API" for your project.
-Create new consent screen and OAuth 2.0 credentials for your project.
-Download the client ID and secret in JSON format.
-
-```zfs
-
-
-# 
-
-```
 
 Copy dot files inspired by
 https://github.com/geerlingguy/dotfiles
@@ -132,15 +74,6 @@ Install latest cuda (12.1 as of this writing) as well as latest nvidia driver (5
 
 ```zsh
 sudo dnf install -y cuda
-```
-
-Install ChatGPT (Be sure and goto Preferences -> sync prompts)
-
-```zsh
-mkdir /opt/ChatGPT-Desktop
-wget https://github.com/lencx/ChatGPT/releases/download/v0.12.0/ChatGPT_0.12.0_linux_x86_64.AppImage.tar.gz -P /opt/ChatGPT-Desktop
-cp files/chatgpticon.png /opt/ChatGPT-Desktop
-cp files/ChatGPT.desktop /usr/share/applications
 ```
 
 Add rpmfusion repos
