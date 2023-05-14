@@ -1,4 +1,4 @@
-# Here is my step to get a new fedora build going
+# Here are my steps to get setup a new Fedora build for AI
 
 Setup Software RAID 1 for system drive and any data drives using mdadm on install
 
