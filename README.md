@@ -55,6 +55,20 @@ sudo dnf install -y vim-default-editor
 sudo dnf install nano
 ```
 
+Install phantomjs ( for yt_dlp )
+
+
+```zsh
+sudo dnf install glibc fontconfig freetype freetype-devel fontconfig-devel wget bzip2
+
+wget https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-2.1.1-linux-x86_64.tar.bz2
+sudo tar xvjf phantomjs-2.1.1-linux-x86_64.tar.bz2 -C /usr/local/share/
+mv /usr/local/share/phantomjs-2.1.1-linux-x86_64/bin/phantomjs /usr/local/share/phantomjs-2.1.1-linux-x86_64/bin/myphantomjs
+cp files/phantomjs /usr/local/share/phantomjs-2.1.1-linux-x86_64/bin/phantomjs
+chmod +x  /usr/local/share/phantomjs-2.1.1-linux-x86_64/bin/phantomjs
+sudo ln -sf /usr/local/share/phantomjs-2.1.1-linux-x86_64/bin/phantomjs /usr/local/bin
+```
+
 
 Install nvidia drive with cuda
 loosly (from https://www.linuxcapable.com/how-to-install-nvidia-drivers-on-fedora-linux/)
