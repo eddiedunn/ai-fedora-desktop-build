@@ -55,7 +55,7 @@ sudo dnf install -y vim-default-editor
 sudo dnf install nano
 ```
 
-Install phantomjs ( for yt_dlp )
+Install phantomjs ( for yt_dlp https://github.com/yt-dlp/yt-dlp )
 
 
 ```zsh
@@ -96,6 +96,17 @@ Add rpmfusion repos
 ```zsh
 sudo dnf install -y https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm
 sudo dnf install -y https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
+```
+
+Install Docker CE
+
+```
+sudo dnf -y install dnf-plugins-core
+sudo dnf config-manager --add-repo https://download.docker.com/linux/fedora/docker-ce.repo
+
+sudo dnf install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+sudo systemctl start docker
+sudo systemctl enable docker
 ```
 
 Install Discord
@@ -184,7 +195,12 @@ chmod 755 /usr/local/bin/gcc-cuda-add-11.2.0-11.7.sh
 ```
 
 
-```zfs
+```zsh
+wget https://developer.download.nvidia.com/compute/cuda/12.1.1/local_installers/cuda_12.1.1_530.30.02_linux.run
+sudo sh cuda_12.1.1_530.30.02_linux.run --toolkit --silent --override --toolkitpath=/opt/cuda-12.1.1
+```
+
+```zsh
 curl -sL "https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh" > "Miniconda3.sh"
 bash Miniconda3.sh
 conda config --set auto_activate_base false
